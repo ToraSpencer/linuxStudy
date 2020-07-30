@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/linuxStudy.dir/main.cpp.o CMakeFiles/linuxStudy.dir/set_funcs.cpp.o CMakeFiles/linuxStudy.dir/process_进程基础.cpp.o  -o linuxStudy 

@@ -1,3 +1,0 @@
-/home/wuhan/study-code/temp/CMakeFiles/rebuild_cache.dir
-/home/wuhan/study-code/temp/CMakeFiles/edit_cache.dir
-/home/wuhan/study-code/temp/CMakeFiles/linuxStudy.dir

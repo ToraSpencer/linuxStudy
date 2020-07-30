@@ -47,10 +47,12 @@ extern void traverse_pfun(void);
 
 
 extern void set_fun_process_basic(void);
+extern void set_fun_process_IPC(void);
 
 
 
 extern void start_process_basic(void);
+extern void start_process_IPC(void);
 
 
 
@@ -112,8 +114,8 @@ int main(int argc, char** argv)
 				cout << "**************************DATA TYPE MENU**********************" << endl;
 				cout << "Please input a number to choose a function setting plan:" << endl;
 				cout << "-1. Back to the previous interface" << endl;
-				cout << "0.process_进程基本" << endl;
-				cout << "1. process_" << endl;
+				cout << "0. process_进程基本" << endl;
+				cout << "1. process_进程间通信" << endl;
 				cout << "2. process_ " << endl;
 				cout << "3. process_ " << endl;
 				cout << "4. process_ " << endl;
@@ -144,7 +146,8 @@ int main(int argc, char** argv)
 
 				case 1:
 					reset_pfun();
-
+					set_fun_process_IPC();
+					start_process_IPC();
 					break;
 				
 				case 2:
