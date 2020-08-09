@@ -14,26 +14,11 @@ using namespace std;
 
 
 
-// 知识点
+// 知识点  
 /*
-	1. 常用进程原语
-					fork()						创建子进程	
-					exit()						终止进程
-					wait()						阻塞等待，直到一个子进程终止，然后取得其终止状态。
-					waitpid()					wait()的改进版本，可以等待一个特定的子进程，可以选择父进程不进入阻塞态。
-					kill()						杀掉一个进程
-					
-
+			1. 进程同步——
 
 				
-	2. 创建多个子进程的要点。
-	3. 僵尸进程、孤儿进程、
-	4. wait()函数
-	5. exec函数族
-
-
-
-	
 */
 
 
@@ -49,8 +34,8 @@ extern int inputTag, inputNum, interfaceLevel;
 /***************************************************************************
 ***************************************************************************/
 // 函数声明
-void set_fun_process_basic(void);
-void start_process_basic(void);
+void set_fun_process_synchronization(void);
+void start_process_synchronization(void);
 
 static void test0(void);
 static void test1(void);
@@ -76,7 +61,7 @@ void traverse_pfun(void);
 /***************************************************************************
 ***************************************************************************/
 // 函数定义
-void set_fun_process_basic(void) 
+void set_fun_process_synchronization(void) 
 {
 	 pfun[0] = test0;
 	 pfun[1] = test1;
@@ -89,7 +74,7 @@ void set_fun_process_basic(void)
 
 
 
-void start_process_basic(void)
+void start_process_synchronization(void)
 {
 	// 界面层级符置为3，进入三级界面：
 	interfaceLevel = 3;
@@ -128,32 +113,31 @@ void start_process_basic(void)
 		case 0:
 			(*pfun[0])();
 			break;
-		
-		
+
+
 		case 1:
 			(*pfun[1])();
 			break;
-		
-		
+
+
 		case 2:
 			(*pfun[2])();
 			break;
-		
-		
+
+
 		case 3:
-			(*pfun[3])(); 	
+			(*pfun[3])();		
 			break;
-		
-		
+
+
 		case 4:
 			(*pfun[4])();
 			break;
-		
+
 			
 		case 5:
 			(*pfun[5])();
 			break;
-
 
 
 		default:
@@ -166,33 +150,8 @@ void start_process_basic(void)
 }
 
 
-
-
-// test0: 创建多个进程。
 static void test0(void)
 {
-	int n = 5, i;						//默认创建5个子进程
-
-	setbuf(stdin, NULL);
-
-	for(i = 0; i < n; i++)	//出口1,父进程专用出口
-	{
-		if(fork() == 0)				//出口2,子进程出口,i不自增
-		{
-			setbuf(stdin, NULL);
-			break;							
-		}
-	}
-			
-
-	if(n == i){
-		sleep(n);
-		printf("I am parent, pid = %d\n", getpid());	
-	} else {
-		sleep(i);
-		printf("I'm %dth child, pid = %d\n", i+1, getpid());
-	}
-
 
 }
 

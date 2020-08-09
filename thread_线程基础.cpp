@@ -14,20 +14,35 @@ using namespace std;
 
 
 
-// 知识点  
+// 知识点
 /*
-	1. IPC的四种基本方式：管道、共享映射区、信号、本地套接字
-	2. 管道
-				函数：pipe(), fifo()
-				优点：使用最简单
-				缺点：	数据不可反复读取，取走了就没了
-							半双工通信。
-							pipe只能在有血缘关系的进程之间使用，fifo后来完善了该缺陷。
-	3. 共享存储映射
-				函数：mmap(), munmap();
-				优点：
-				缺点：
-				
+			1.定义和特点：
+						1. linux环境下线程的本质是LWP（轻量级线程light weight process），本质仍然是进程。
+						
+						2. 线程有PCB，没有独立的地址空间。多个线程共享一个地址空间。
+
+						3. 是最小的执行单位，即是CPU分配时间的最小单位。
+
+						4. 线程可以看做寄存器和栈的集合。
+
+			2. 进程&线程的比较
+
+
+			3. 常用的线程原语，和对应的进程原语。
+						pthread_create()												fork()						创建一个新线程
+						pthread_self()													getpid()					获取线程ID
+						pthread_exit()													exit()						退出单个线程
+						pthread_join()													wait()						阻塞等待线程退出，并获取退出状态。
+						pthread_cancel()												kill()						杀掉线程。
+						pthread_detach()																					实现线程分离
+						
+
+
+			4. 线程分离——若一个线程处于分离态，则它与主控线程已经断开关系，其退出状态不由其他线程获取，直接自己主动释放。
+
+
+
+	
 */
 
 
@@ -43,8 +58,8 @@ extern int inputTag, inputNum, interfaceLevel;
 /***************************************************************************
 ***************************************************************************/
 // 函数声明
-void set_fun_process_IPC(void);
-void start_process_IPC(void);
+void set_fun_thread_basic(void);
+void start_thread_basic(void);
 
 static void test0(void);
 static void test1(void);
@@ -70,7 +85,7 @@ void traverse_pfun(void);
 /***************************************************************************
 ***************************************************************************/
 // 函数定义
-void set_fun_process_IPC(void) 
+void set_fun_thread_basic(void) 
 {
 	 pfun[0] = test0;
 	 pfun[1] = test1;
@@ -83,14 +98,14 @@ void set_fun_process_IPC(void)
 
 
 
-void start_process_IPC(void)
+void start_thread_basic(void)
 {
 	// 界面层级符置为3，进入三级界面：
 	interfaceLevel = 3;
 	while (3 == interfaceLevel)
 	{
 		cout << "\n\n\n\n" << endl;
-		cout << "**************************MENU: OOP_function_object**********************" << endl;
+		cout << "**************************MENU:THREAD_BASIC**********************" << endl;
 		cout << "Please choose a demon function to run:" << endl;
 		cout << "-2: Run all existed demon function." << endl;
 		cout << "-1: Back to the previous interface." << endl;
@@ -122,31 +137,32 @@ void start_process_IPC(void)
 		case 0:
 			(*pfun[0])();
 			break;
-
-
+		
+		
 		case 1:
 			(*pfun[1])();
 			break;
-
-
+		
+		
 		case 2:
 			(*pfun[2])();
 			break;
-
-
+		
+		
 		case 3:
-			(*pfun[3])();		
+			(*pfun[3])(); 	
 			break;
-
-
+		
+		
 		case 4:
 			(*pfun[4])();
 			break;
-
+		
 			
 		case 5:
 			(*pfun[5])();
 			break;
+
 
 
 		default:
@@ -161,6 +177,28 @@ void start_process_IPC(void)
 
 static void test0(void)
 {
+	int n = 5, i;						//默认创建5个子进程
+
+	setbuf(stdin, NULL);
+
+	for(i = 0; i < n; i++)	//出口1,父进程专用出口
+	{
+		if(fork() == 0)				//出口2,子进程出口,i不自增
+		{
+			setbuf(stdin, NULL);
+			break;							
+		}
+	}
+			
+
+	if(n == i){
+		sleep(n);
+		printf("I am parent, pid = %d\n", getpid());	
+	} else {
+		sleep(i);
+		printf("I'm %dth child, pid = %d\n", i+1, getpid());
+	}
+
 
 }
 

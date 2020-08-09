@@ -14,26 +14,25 @@ using namespace std;
 
 
 
-// 知识点
+// 知识点  
 /*
-	1. 常用进程原语
-					fork()						创建子进程	
-					exit()						终止进程
-					wait()						阻塞等待，直到一个子进程终止，然后取得其终止状态。
-					waitpid()					wait()的改进版本，可以等待一个特定的子进程，可以选择父进程不进入阻塞态。
-					kill()						杀掉一个进程
-					
-
-
-				
-	2. 创建多个子进程的要点。
-	3. 僵尸进程、孤儿进程、
-	4. wait()函数
-	5. exec函数族
+			1. 系统调用的定义、特点
+							1. 是OS提供给用户程序访问，并使用OS内核提供各种服务，的一组操作接口。
+							
+							2. 是在内核态运行，即在内核地址空间内执行。
+							
+							3. 开销较大，因为需要在用户空间和内核空间环境上下切换。
 
 
 
-	
+			2. 系统调用和库函数的区别：
+							1. 函数库调用是语言或应用程序的一部分，而系统调用是操作系统的一部分
+
+							2. 所有C库函数都是相同的，但是各个OS的系统调用不相同。
+
+							3. 库函数是调用库中的一个程序，系统调用是OS的一个进入点。
+
+							4. 库函数调用在用户地址空间执行，系统调用在内核地址空间执行，状态分别是用户态、内核态，运行时间分别属于用户时间、系统时间。
 */
 
 
@@ -49,8 +48,8 @@ extern int inputTag, inputNum, interfaceLevel;
 /***************************************************************************
 ***************************************************************************/
 // 函数声明
-void set_fun_process_basic(void);
-void start_process_basic(void);
+void set_fun_basic_system_call(void);
+void start_basic_system_call(void);
 
 static void test0(void);
 static void test1(void);
@@ -76,7 +75,7 @@ void traverse_pfun(void);
 /***************************************************************************
 ***************************************************************************/
 // 函数定义
-void set_fun_process_basic(void) 
+void set_fun_basic_system_call(void) 
 {
 	 pfun[0] = test0;
 	 pfun[1] = test1;
@@ -89,14 +88,14 @@ void set_fun_process_basic(void)
 
 
 
-void start_process_basic(void)
+void start_basic_system_call(void)
 {
 	// 界面层级符置为3，进入三级界面：
 	interfaceLevel = 3;
 	while (3 == interfaceLevel)
 	{
 		cout << "\n\n\n\n" << endl;
-		cout << "**************************MENU: OOP_function_object**********************" << endl;
+		cout << "**************************MENU: PROCESS_PIPE**********************" << endl;
 		cout << "Please choose a demon function to run:" << endl;
 		cout << "-2: Run all existed demon function." << endl;
 		cout << "-1: Back to the previous interface." << endl;
@@ -128,32 +127,31 @@ void start_process_basic(void)
 		case 0:
 			(*pfun[0])();
 			break;
-		
-		
+
+
 		case 1:
 			(*pfun[1])();
 			break;
-		
-		
+
+
 		case 2:
 			(*pfun[2])();
 			break;
-		
-		
+
+
 		case 3:
-			(*pfun[3])(); 	
+			(*pfun[3])();		
 			break;
-		
-		
+
+
 		case 4:
 			(*pfun[4])();
 			break;
-		
+
 			
 		case 5:
 			(*pfun[5])();
 			break;
-
 
 
 		default:
@@ -166,33 +164,8 @@ void start_process_basic(void)
 }
 
 
-
-
-// test0: 创建多个进程。
 static void test0(void)
 {
-	int n = 5, i;						//默认创建5个子进程
-
-	setbuf(stdin, NULL);
-
-	for(i = 0; i < n; i++)	//出口1,父进程专用出口
-	{
-		if(fork() == 0)				//出口2,子进程出口,i不自增
-		{
-			setbuf(stdin, NULL);
-			break;							
-		}
-	}
-			
-
-	if(n == i){
-		sleep(n);
-		printf("I am parent, pid = %d\n", getpid());	
-	} else {
-		sleep(i);
-		printf("I'm %dth child, pid = %d\n", i+1, getpid());
-	}
-
 
 }
 

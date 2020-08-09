@@ -1,0 +1,13 @@
+linux常用头文件：
+		<fcntl.h>     			文件控制
+		<unistd.h>    			大量针对系统调用的封装，如 fork、pipe 以及各种 I/O 原语（read、write、close 等等）。
+		<utime.h>     			文件时间
+		<sys/times.h>     		进程时间
+		<sys/wait.h>      		进程控制
+		<sys/ipc.h>      		IPC(命名管道)
+		<sys/msg.h>      		消息队列
+		<sys/resource.h> 		资源操作
+		<sys/sem.h>      		信号量
+		<sys/shm.h>     		共享存储
+		<sys/statvfs.h>  		文件系统信息
+		<sys/time.h>     		时间类型

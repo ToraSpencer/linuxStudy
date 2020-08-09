@@ -16,20 +16,13 @@ using namespace std;
 
 // 知识点
 /*
-	1. 常用进程原语
-					fork()						创建子进程	
-					exit()						终止进程
-					wait()						阻塞等待，直到一个子进程终止，然后取得其终止状态。
-					waitpid()					wait()的改进版本，可以等待一个特定的子进程，可以选择父进程不进入阻塞态。
-					kill()						杀掉一个进程
-					
+			1. 线程同步的含义——一定时间内，只允许某一个线程访问某一个资源，不允许其他线程访问。
+			
+			2. 线程同步实现的三种基本方式——互斥锁(mutex), 读写锁(read-write lock)，条件变量(condition variable)，信号量(semaphore)
 
 
-				
-	2. 创建多个子进程的要点。
-	3. 僵尸进程、孤儿进程、
-	4. wait()函数
-	5. exec函数族
+			3. 
+
 
 
 
@@ -49,8 +42,8 @@ extern int inputTag, inputNum, interfaceLevel;
 /***************************************************************************
 ***************************************************************************/
 // 函数声明
-void set_fun_process_basic(void);
-void start_process_basic(void);
+void set_fun_thread_synchronization(void);
+void start_thread_synchronization(void);
 
 static void test0(void);
 static void test1(void);
@@ -76,7 +69,7 @@ void traverse_pfun(void);
 /***************************************************************************
 ***************************************************************************/
 // 函数定义
-void set_fun_process_basic(void) 
+void set_fun_thread_synchronization(void) 
 {
 	 pfun[0] = test0;
 	 pfun[1] = test1;
@@ -89,14 +82,14 @@ void set_fun_process_basic(void)
 
 
 
-void start_process_basic(void)
+void start_thread_synchronization(void)
 {
 	// 界面层级符置为3，进入三级界面：
 	interfaceLevel = 3;
 	while (3 == interfaceLevel)
 	{
 		cout << "\n\n\n\n" << endl;
-		cout << "**************************MENU: OOP_function_object**********************" << endl;
+		cout << "**************************MENU:THREAD_SYNCHRONIZATION**********************" << endl;
 		cout << "Please choose a demon function to run:" << endl;
 		cout << "-2: Run all existed demon function." << endl;
 		cout << "-1: Back to the previous interface." << endl;
@@ -166,9 +159,6 @@ void start_process_basic(void)
 }
 
 
-
-
-// test0: 创建多个进程。
 static void test0(void)
 {
 	int n = 5, i;						//默认创建5个子进程
