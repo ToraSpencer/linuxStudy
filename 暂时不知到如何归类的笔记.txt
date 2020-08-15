@@ -11,3 +11,14 @@ linux常用头文件：
 		<sys/shm.h>     		共享存储
 		<sys/statvfs.h>  		文件系统信息
 		<sys/time.h>     		时间类型
+
+
+
+
+linux和vsworks的比较
+
+			linux									vxworks
+			
+
+
+
