@@ -101,6 +101,11 @@ void start_basic_system_call(void)
 		cout << "-1: Back to the previous interface." << endl;
 		cout << "0. test0:  " << endl;
 		cout << "1. test1 " << endl;
+		cout << "2. test2 " << endl;
+		cout << "3. test3 " << endl;
+		cout << "4. test4 " << endl;
+		cout << "5. test5 " << endl;
+		
 
 
 		inputTag = scanf("%d", &inputNum);

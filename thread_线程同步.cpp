@@ -16,14 +16,80 @@ using namespace std;
 
 // 知识点
 /*
-			1. 线程同步的含义——一定时间内，只允许某一个线程访问某一个资源，不允许其他线程访问。
+			线程同步 
+						一定时间内，只允许某一个线程访问某一个资源，不允许其他线程访问。
+
+			线程安全
+						多线程并行的程序中，存在同步机制保证各个线程正确正常地执行，则此时是线程安全的。
+						线程安全
+
+
 			
-			2. 线程同步实现的三种基本方式——互斥锁(mutex), 读写锁(read-write lock)，条件变量(condition variable)，信号量(semaphore)
+			线程同步实现的基本方式，及其特点
+						互斥锁(mutex)
+						读写锁(read-write lock)				————适用于共享数据读多写少的情形
+						条件变量(condition variable)		————本身不是锁，但是可以造成线程阻塞，常与mutex配合使用
+						信号量(semaphore)							————可以视为mutex的进化版，一种可以被多个线程同时占有的锁。
 
 
-			3. 
+
+			mutex 
+						本质是一个结构体，但是可以被视为0/1整型变量。
+						是建议锁，并非强制锁。
+									也就是说多线程中如果有线程当做mutex不存在，不调用lock或trylock函数直接访问资源，是允许的。
+
+			
 
 
+			mutex相关的系列函数pthread_mutex_~
+						pthread_mutex_init()
+						pthread_mutex_destroy()
+						pthread_mutex_lock()
+						pthread_mutex_unlock()
+						pthread_mutex_trylock()
+
+
+			线程死锁现象
+						含义——
+						情形
+									1. 线程视图对同一个mutex加锁两次。
+									2. 线程1有A锁请求B锁，线程2有B锁请求A锁。
+									3. 哲学家用餐问题中的振荡情形。
+
+
+
+			读写锁rwlock 
+						有read和write两种模式的锁。
+						原则——写独占，读共享；写比读优先级高。
+						非常适用于共享数据读多写少的情形。
+
+						
+
+			rwlock相关的系列函数pthread_rwlock_~
+						pthread_rwlock_init()
+						pthread_rwlock_destroy()
+						pthread_rwlock_rdlock()
+						pthread_rwlock_tryrdlock()
+						pthread_rwlock_wrlock()
+						pthread_rwlock_trywrlock()
+						pthread_rwlock_unlock()
+
+
+			条件变量cond
+
+
+			cond相关的pthread_cond_~系列函数
+
+
+			信号量semaphore
+
+			
+
+			
+						
+						
+
+			
 
 
 	

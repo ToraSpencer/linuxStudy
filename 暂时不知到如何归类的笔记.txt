@@ -18,6 +18,16 @@ linux常用头文件：
 linux和vsworks的比较
 
 			linux									vxworks
+
+
+
+
+MMU、虚拟地址
+			存储器管理单元（memory management unit）
+			MMU实现了物理内存到虚拟内存的映射。
+			每个进程创建出来都会有4G的虚拟内存（32位的CPU）。
+			程序使用的都是虚拟地址，不关心物理地址具体怎么分配的。
+			
 			
 
 
