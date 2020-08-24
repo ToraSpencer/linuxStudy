@@ -73,10 +73,9 @@ using namespace std;
 						
 
 
-
-
 			线程分离
 						含义——若一个线程处于分离态，则它与主控线程已经断开关系，其退出状态不由其他线程获取，直接自己主动释放。
+						主线程创建出一个新线程，若新线程设置为分离态，则该线程不能被主线程使用pthread_join来回收。
 
 
 
@@ -273,27 +272,6 @@ void start_thread_basic(void)
 
 static void test0(void)
 {
-	int n = 5, i;						//默认创建5个子进程
-
-	setbuf(stdin, NULL);
-
-	for(i = 0; i < n; i++)	//出口1,父进程专用出口
-	{
-		if(fork() == 0)				//出口2,子进程出口,i不自增
-		{
-			setbuf(stdin, NULL);
-			break;							
-		}
-	}
-			
-
-	if(n == i){
-		sleep(n);
-		printf("I am parent, pid = %d\n", getpid());	
-	} else {
-		sleep(i);
-		printf("I'm %dth child, pid = %d\n", i+1, getpid());
-	}
 
 
 }
