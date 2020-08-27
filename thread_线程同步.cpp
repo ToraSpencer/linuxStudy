@@ -42,11 +42,11 @@ using namespace std;
 
 
 			mutex相关的系列函数pthread_mutex_~
-						pthread_mutex_init()
-						pthread_mutex_destroy()
-						pthread_mutex_lock()
-						pthread_mutex_unlock()
-						pthread_mutex_trylock()
+						pthread_mutex_init()			————互斥锁使用之前必须初始化。
+						pthread_mutex_destroy()		————互斥锁使用完之后应该销毁。
+						pthread_mutex_lock()			————传入一个互斥锁，上锁，可以理解为将mutex--，若mutex==0则加锁失败，当前线程阻塞。
+						pthread_mutex_unlock()		————传入之前上锁的互斥锁，将其解锁，可以理解为将mutex++，然后值变为1
+						pthread_mutex_trylock()		————尝试加锁，与~_lock()函数的区别是：加锁失败的话线程不会阻塞。
 
 
 			线程死锁现象
