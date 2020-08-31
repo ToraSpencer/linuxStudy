@@ -1,8 +1,11 @@
 #include <iostream>
 #include <cstdio>
+#include <cstring>			// strerr需要使用string.h
 #include <string>
 #include <typeinfo>
 #include <unistd.h>
+#include <pthread.h>
+#include <vector>
 
 
 
@@ -17,7 +20,7 @@ using namespace std;
 // 知识点
 /*
 			定义和特点：
-						1. linux环境下线程的本质是LWP（轻量级线程light weight process），本质仍然是进程。
+						1. linux环境下线程的本质是LWP（轻量级进程light weight process），本质仍然是进程。
 						
 						2. 线程有PCB，没有独立的地址空间。多个线程共享一个地址空间。
 
@@ -137,6 +140,15 @@ using namespace std;
 */
 
 
+// 全局变量
+pthread_mutex_t m_remain, m_vec;
+
+vector<int> vec;
+
+int remain = 30;
+
+
+
 
 /***************************************************************************
 ***************************************************************************/
@@ -151,6 +163,10 @@ extern int inputTag, inputNum, interfaceLevel;
 // 函数声明
 void set_fun_thread_basic(void);
 void start_thread_basic(void);
+
+void* thread1(void* arg)
+void* thread2(void* arg)
+
 
 static void test0(void);
 static void test1(void);
@@ -170,6 +186,14 @@ void traverse_pfun(void);
 /***************************************************************************
 ***************************************************************************/
 // 自定义类的实现
+
+typedef struct
+{
+    char str[100];
+    long num;
+}threadStatus;      // 线程退出返回的数据，是自定义的，可以用来表示退出状态。
+
+
 
 
 
@@ -268,19 +292,147 @@ void start_thread_basic(void)
 
 
 
-
-
-static void test0(void)
+void* thread1(void* arg)
 {
+    long i;
+    i = (long)arg;               // 通过传入的参数arg来区分每个线程。
+    threadStatus* ret;
+    
+    sleep(1);
 
+    // pthread_self()————返回线程id
+    printf("我是%ld号线程，我的线程id是%lu，我快要死啦。\n", i, pthread_self());
+
+    ret = (threadStatus*)malloc(sizeof(threadStatus));
+    strncpy(ret->str, "hahahaha", 100);
+    ret->num = i;
+
+    // pthread_exit()————将本线程退出。
+    /*
+        void pthread_exit(  void* retval            传出参数，表示线程退出状态，即线程体返回的void*类型的数据，不需要的话这里用NULL  
+                         )
+
+    */
+    pthread_exit((void*)ret);
+}
+
+
+void* thread2(void* arg)
+{
+ 
+    printf("我是一个分离线程，我的线程ID是%lu, 我结束之后不需要被主线程回收\n", pthread_self());
+    
+    pthread_exit(NULL);
 
 }
 
 
 
 
+// test0: 创建多个线程，并且传递参数，主线程阻塞等待这些线程结束后回收
+static void test0(void)
+{
+			long i;
+			int ret;
+			pthread_t tid[5] = {0}; 						 // 存储线程ID的数组
+			threadStatus* threadRet;
+			void* pv = NULL;
+	
+			for(i = 0; i<5; i++)
+			{
+	// pthread_create()——————创建线程
+	/*	
+			int pthread_create( pthread_t *thread,									传出参数，内容为线程ID												 
+													const pthread_attr_t *attr, 				线程属性结构体的指针，如果传递NULL的话表示使用默认属性。
+													void* (*start_routine)(void*),			线程体函数指针。
+													void* arg 													传递给线程体函数的参数。
+													)
+			返回值：				成功————0； 失败——————错误号
+	*/
+					pv = (void*)i;
+					pthread_create(&(tid[i]), NULL, thread1, pv);
+					if(ret!=0)					// 创建线程的错误处理
+					{
+							fprintf(stderr, "pthread_create error: %s, error number is %d\n", strerror(ret), ret);
+							exit(1);
+					}
+	
+			}
+	
+	
+			for(i = 0; i<5; ++i)
+			{
+	//	pthread_join()————主线程阻塞等待线程退出
+	/* 
+			int pthread_join( 	pthread_t thread, 	线程ID
+													void**	retval			传出参数，用于保存线程退出状态。
+											)
+			返回值：成功————0； 失败————错误号
+	*/
+					ret = pthread_join(tid[i], (void**)&threadRet);
+					if(ret != 0)					// 回收线程错误处理
+					{
+							fprintf(stderr, "pthread_join error: %s, error number is %d\n", strerror(ret), ret);
+							exit(1);
+					}
+					printf("回收了一个线程，线程ID是ret == %lu，" 
+							"该线程返回的线程状态是：threadRet->str == %s, threadRet->num == %ld\n", 
+									tid[i], threadRet->str, threadRet->num);
+	
+	
+					free(threadRet);
+			}
+	
+	
+	
+			pthread_exit(NULL);
+	
+	
+	
+
+
+
+}
+
+
+
+// test1: 线程分离
 static void test1(void)
 {
+	pthread_t tid;
+	int ret;
+	pthread_attr_t attr;
+	
+	
+	
+	ret = pthread_attr_init(&attr); 		// 初始化线程属性结构体
+	if(ret!=0)													// 初始化错误处理
+	{
+			fprintf(stderr, "pthread_attr_init error: %s, error number is %d\n", strerror(ret), ret);
+			exit(1);
+	}
+	
+	
+	// 设置线程分离属性
+	// 第二个参数是int detachstate,对应的枚举常量有：
+	/*
+			PTHREAD_CREATE_DETACHED 		分离线程
+			PTHREAD_CREATE_JOINABLE 		非分离线程
+	*/
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);				// 注意，默认是非分离态。若新线程设置为分离态，则该线程不能被主线程使用pthread_join来回收，否则会出错。
+	
+	
+	ret = pthread_create(&tid, &attr, &thread2, NULL);
+	if(ret!=0)					// 创建线程的错误处理
+	{
+			fprintf(stderr, "pthread_create error: %s, error number is %d\n", strerror(ret), ret);
+			exit(1);
+	}
+	
+	
+	
+	pthread_exit(NULL);
+
  
 
 }

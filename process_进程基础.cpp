@@ -267,10 +267,12 @@ static void test0(void)
 	}
 			
 
-	if(n == i){
+	if(n == i)
+	{
 		sleep(n);
 		printf("I am parent, pid = %d\n", getpid());	
-	} else {
+	} else 
+	{
 		sleep(i);
 		printf("I'm %dth child, pid = %d\n", i+1, getpid());
 	}
@@ -283,7 +285,7 @@ static void test0(void)
 // test1: exec函数族————
 static void test1(void)
 {
-	    pid_t pid;
+	  pid_t pid;
     int i;
 
     for(i = 0; i<2; i++)

@@ -16,15 +16,15 @@ using namespace std;
 // 知识点
 /*
         环境变量
-			指定OS运行环境的一些参数。
-			本质是字符串
-			有统一的格式：名 = 值；其中值用来描述进程的环境信息。
+								指定OS运行环境的一些参数。
+								本质是字符串
+								有统一的格式：名 = 值；其中值用来描述进程的环境信息。
 
 
         环境变量的存储形式
-			char*[]数组
-			数组名为environ
-			有哨兵结尾NULL;
+								char*[]数组
+								数组名为environ
+								有哨兵结尾NULL;
 
 
         常见的环境变量
@@ -47,51 +47,6 @@ using namespace std;
                 export
 
 */
-
-
-
-
-
-/***************************************************************************
-***************************************************************************/
-// 相关函数详细说明
-
-
-// getenv()————————获取环境变量值
-/*
-    char* getenv(
-                    const char* name
-                )
-    返回值： 成功的话返回环境变量的值；失败的话返回NULL指针。
-
-*/
-
-
-// setenv()————————设置环境变量的值。
-/*
-    int setenv(const char* name,            环境变量名      
-                const char* value,          设定值
-                int overwrite               0表示不覆盖原环境变量（即shell的环境变量），1表示覆盖。
-                );
-    返回值：返回0，失败返回-1
-
-    overwrite == 0时，如给PATH变量设定了一个新值，则本进程和shell进程中的PATH环境变量是不同的。
-    overwrite == 1常在设置新环境变量时使用。
-
-*/
-
-
-// unsetenv()————————删除某个环境变量的定义
-/*
-    int unsetenv(cosnt char* name           环境变量名
-                    ) 
-    
-    返回值：    0   ————成功，或者名为name的环境变量不存在
-                -1  ——————失败
-
-*/
-
-
 
 
 
@@ -233,7 +188,7 @@ void start_basic_environment_variable(void)
 // test0: C/C++程序中linux环境变量的获取、定义。
 static void test0(void)
 {
-	    int i = 0;
+	  int i = 0;
 
     // 在C程序中打印当前Linux系统的环境变量。
     for(i = 0; environ[i]!=NULL; i++)
@@ -243,7 +198,16 @@ static void test0(void)
     printf("\n\n\n\n\n\n");
 
 
-
+		// getenv()————————获取环境变量值
+		/*
+				char* getenv(
+												const char* name
+										)
+				返回值： 成功的话返回环境变量的值；失败的话返回NULL指针。
+		
+		*/
+		
+		
     // 使用getenv()函数获取某一个环境变量的值。
     char* value = NULL;
     value = getenv("SHELL");
@@ -253,11 +217,39 @@ static void test0(void)
     printf("当前系统家目录：HOME == %s\n", value);
 
 
+
+		// setenv()————————设置环境变量的值。
+		/*
+				int setenv(const char* name,						环境变量名 		 
+										const char* value,					设定值
+										int overwrite 							0表示不覆盖原环境变量（即shell的环境变量），1表示覆盖。
+										);
+				返回值：返回0，失败返回-1
+		
+				overwrite == 0时，如给PATH变量设定了一个新值，则本进程和shell进程中的PATH环境变量是不同的。
+				overwrite == 1常在设置新环境变量时使用。
+		
+		*/
+		
+
     
     // 使用setenv()函数设定一个新的环境变量。
     setenv("newEnv","this is a new environment variable.", 1);
     value = getenv("newEnv");
     printf("设置的新环境变量newEnv==%s\n", value);
+
+
+
+		
+		// unsetenv()————————删除某个环境变量的定义
+		/*
+				int unsetenv(cosnt char* name 					环境变量名
+												) 
+				
+				返回值：		0 	————成功，或者名为name的环境变量不存在
+										-1	——————失败
+		
+		*/
 
 
 

@@ -18,9 +18,6 @@ using namespace std;
 /*
 
 
-
-
-
 			FIFO（命名管道）
 					和普通管道pipe不同的地方在于，FIFO可以在无血缘关系进程间通信。
 
